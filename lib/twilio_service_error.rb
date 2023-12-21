@@ -1,0 +1,1 @@
+class TwilioServiceError < StandardError; end

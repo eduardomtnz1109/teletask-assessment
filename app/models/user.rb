@@ -14,6 +14,10 @@ class User < ApplicationRecord
   has_many :patient_appointments, class_name: 'Appointment', foreign_key: 'patient_id'
   has_many :slots, foreign_key: 'doctor_id', dependent: :destroy
 
+  validates :name, presence: true
+  validates :phone_number, presence: true, uniqueness: true, format: { with: /\A\+\d+\z/, message: 'must be in the format: +1234567890' }
+  validates :role, presence: true
+
   def create_default_slots
     # Set the application's timezone to EST
     Time.use_zone('Eastern Time (US & Canada)') do

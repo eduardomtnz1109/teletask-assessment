@@ -9,12 +9,14 @@ class TwilioService
   end
 
   def send_sms(to:, body:)
-    @client.messages.create(
-      messaging_service_sid: @messaging_service_sid,
-      to: to,
-      body: body
-    )
-  rescue Twilio::REST::RestError => e
-    raise TwilioError, e.message
+    begin
+      @client.messages.create(
+        messaging_service_sid: @messaging_service_sid,
+        to: to,
+        body: body
+      )
+    rescue Twilio::REST::TwilioError => e
+      raise TwilioServiceError, "Failed to send SMS: #{e.message}"
+    end
   end
 end

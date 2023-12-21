@@ -18,7 +18,6 @@ class UsersController < ApplicationController
     redirect_to phone_verify_user_path(@user)
   end
 
-
   def process_details
     if @user.update(user_params)
       if send_verification_code
@@ -65,7 +64,7 @@ class UsersController < ApplicationController
 
   def send_verification_code
     VerifyService.new.send_code(@user.phone_number)
-  rescue TwilioError => e
+  rescue VerifyServiceError => e
     Rails.logger.error "Twilio Error: #{e.message}"
     false
   end

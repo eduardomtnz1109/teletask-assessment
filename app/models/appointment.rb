@@ -1,12 +1,9 @@
-class User < ApplicationRecord
-  attr_accessor :verification_code
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+class Appointment < ApplicationRecord
+  belongs_to :doctor, class_name: 'User'
+  belongs_to :patient, class_name: 'User'
 
-  enum role: { patient: 0, doctor: 1 }
+  enum status: { pending: 'pending', approved: 'approved', declined: 'declined' }
 
-  has_many :doctor_appointments, class_name: 'Appointment', foreign_key: 'doctor_id'
-  has_many :patient_appointments, class_name: 'Appointment', foreign_key: 'patient_id'
+  validates :start_time, presence: true
+  validates :end_time, presence: true
 end

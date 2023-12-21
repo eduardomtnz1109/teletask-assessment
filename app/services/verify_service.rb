@@ -4,22 +4,26 @@ class VerifyService
   end
 
   def send_code(phone_number)
-    @verify_service.verifications.create(
-      to: phone_number,
-      channel: 'sms'
-    )
-  rescue TwilioError => e
-    raise e
+    begin
+      @verify_service.verifications.create(
+        to: phone_number,
+        channel: 'sms'
+      )
+    rescue Twilio::REST::TwilioError => e
+      raise VerifyServiceError, "Failed to send verification code: #{e.message}"
+    end
   end
 
   def verify_code(phone_number, code)
-    verification_check = @verify_service.verification_checks.create(
-      to: phone_number,
-      code: code
-    )
+    begin
+      verification_check = @verify_service.verification_checks.create(
+        to: phone_number,
+        code: code
+      )
 
-    verification_check.status == 'approved'
-  rescue TwilioError => e
-    raise e
+      verification_check.status == 'approved'
+    rescue Twilio::REST::TwilioError => e
+      raise VerifyServiceError, "Failed to verify code: #{e.message}"
+    end
   end
 end

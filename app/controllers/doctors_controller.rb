@@ -1,16 +1,17 @@
-# app/controllers/doctors_controller.rb
-
 class DoctorsController < ApplicationController
+  # GET /doctors
   def index
     @doctors = User.doctors
   end
 
+  # GET /doctors/:id
   def show
     @doctor = User.find(params[:id])
-    @available_slots = @doctor.slots.available # Assuming you have a scope or method to fetch available slots
+    @available_slots = @doctor.slots.available
     @appointment = Appointment.new
   end
 
+  # POST /doctors/:id/create_appointment
   def create_appointment
     @doctor = User.find(params[:id])
     slot = @doctor.slots.available.find_by_id(appointment_params[:slot_id])
@@ -28,7 +29,7 @@ class DoctorsController < ApplicationController
 
       redirect_to appointments_path, notice: 'Appointment requested successfully.'
     else
-      flash.new[:alert] = "Something went wrong, please refresh the page and try again."
+      flash.now[:alert] = 'Something went wrong, please refresh the page and try again.'
 
       render :show
     end
