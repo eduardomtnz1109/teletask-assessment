@@ -1,0 +1,23 @@
+<%= form_for(@user, url: complete_verification_user_path, method: :patch) do |f| %>
+  <h2>Phone Verification</h2>
+
+  <!-- Error Messages -->
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %>:</h2>
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.label :verification_code, 'Enter Verification Code' %>
+  <%= f.text_field :verification_code %>
+
+  <%= f.submit "Verify and Complete Signup", class: "btn btn-primary" %>
+<% end %>
+
+<%= link_to 'Resend Code', resend_verify_code_user_path, class: "button" %>
+<%= link_to 'Edit Phone Number', start_onboarding_users_path, class: "button" %>
