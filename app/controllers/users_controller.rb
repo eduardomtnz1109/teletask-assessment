@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:start_onboarding, :phone_verify, :process_details, :complete_verification]
+  before_action :set_user, only: [:start_onboarding, :phone_verify, :process_details, :complete_verification, :resend_verify_code]
 
   def start_onboarding
     # This action will just render the start_onboarding view
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def resend_verify_code
-    if send_verification_code(@user)
+    if send_verification_code
       flash.now[:notice] = 'Verification code resent successfully.'
     else
       flash.now[:alert] = 'Failed to resend verification code.'
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def process_details
     if @user.update(user_params)
-      if send_verification_code(@user)
+      if send_verification_code
         redirect_to phone_verify_user_path(@user), notice: "Verification code sent to #{@user.phone_number}."
       else
         flash.now[:alert] = 'Failed to send verification code.'
@@ -37,9 +37,9 @@ class UsersController < ApplicationController
     if verify_code(@user.phone_number, verification_params[:verification_code])
       @user.update(phone_verified: true)
       @user.create_default_slots if @user.doctor?
-      send_welcome_notification(@user)
+      NotificationService.new.send_welcome_notification(@user)
 
-      redirect_to dashboard_index_path, notice: 'Your account has been successfully created and verified'
+      redirect_to appointments_index_path, notice: 'Your account has been successfully created and verified'
     else
       flash.now[:alert] = 'Incorrect verification code.'
 
@@ -63,8 +63,8 @@ class UsersController < ApplicationController
     params.require(:user).permit(:verification_code)
   end
 
-  def send_verification_code(user)
-    VerifyService.new.send_code(user.phone_number)
+  def send_verification_code
+    VerifyService.new.send_code(@user.phone_number)
   rescue TwilioError => e
     Rails.logger.error "Twilio Error: #{e.message}"
     false
@@ -72,11 +72,5 @@ class UsersController < ApplicationController
 
   def verify_code(phone_number, code)
     VerifyService.new.verify_code(phone_number, code)
-  end
-
-  def send_welcome_notification(user)
-    NotificationService.new.send_notification(to: user.phone_number, message: 'Welcome to our appointment platform!!!')
-  rescue TwilioError => e
-    Rails.logger.error "Twilio Error: #{e.message}"
   end
 end

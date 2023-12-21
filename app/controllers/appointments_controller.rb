@@ -29,7 +29,8 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     if current_user.role.doctor? && @appointment.pending?
       @appointment.approved!
-      # Send SMS notification to patient here
+      NotificationService.new.send_appointment_approval_notification(@appointment)
+
       redirect_to appointments_path, notice: 'Appointment approved successfully.'
     else
       redirect_to appointments_path, alert: 'Unable to approve appointment.'
@@ -40,6 +41,8 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
     if current_user.role.doctor? && @appointment.pending?
       @appointment.declined!
+      NotificationService.new.send_appointment_approval_notification(@appointment, false)
+
       # Send SMS notification to patient here
       redirect_to appointments_path, notice: 'Appointment declined successfully.'
     else

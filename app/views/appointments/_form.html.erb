@@ -1,0 +1,18 @@
+<%= form_with(model: appointment, url: create_appointment_doctor_path(@doctor), local: true) do |form| %>
+  <% if appointment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(appointment.errors.count, 'error') %>:</h2>
+
+      <ul>
+        <% appointment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.hidden_field :slot_id %>
+    <%= form.submit 'Request Appointment', class: 'btn btn-primary' %>
+  </div>
+<% end %>

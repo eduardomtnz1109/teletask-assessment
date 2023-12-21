@@ -1,6 +1,6 @@
 class SlotsController < ApplicationController
   def index
-    @slots = current_user.slots.for_today.order(:start_time)
+    @slots = current_user.slots.for_today.available.order(:start_time)
   end
 
   def new

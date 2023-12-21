@@ -28,4 +28,9 @@ Rails.application.routes.draw do
       post :decline
     end
   end
+
+  resources :slots
+  resources :doctors, only: %i[index show] do
+    post 'create_appointment', on: :member
+  end
 end
