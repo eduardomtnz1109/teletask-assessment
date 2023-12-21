@@ -1,0 +1,24 @@
+<h1>Your Slots</h1>
+
+<%= link_to 'Add Slot', new_slot_path, class: 'btn btn-primary' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @slots.each do |slot| %>
+      <tr>
+        <td><%= slot.start_time.strftime('%H:%M %p') %></td>
+        <td><%= slot.end_time.strftime('%H:%M %p') %></td>
+        <td>
+          <%= link_to 'Remove', slot, method: :delete, data: { confirm: 'Are you sure you want to remove this slot?' }, class: 'btn btn-danger btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

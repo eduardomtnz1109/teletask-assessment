@@ -47,6 +47,9 @@ gem "bootsnap", require: false
 gem 'dotenv-rails', require: 'dotenv/rails-now'
 gem 'devise'
 gem 'twilio-ruby'
+gem 'delayed_job_active_record'
+gem 'whenever', require: false
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

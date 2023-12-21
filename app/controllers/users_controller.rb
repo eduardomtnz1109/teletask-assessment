@@ -36,6 +36,7 @@ class UsersController < ApplicationController
   def complete_verification
     if verify_code(@user.phone_number, verification_params[:verification_code])
       @user.update(phone_verified: true)
+      @user.create_default_slots if @user.doctor?
       send_welcome_notification(@user)
 
       redirect_to dashboard_index_path, notice: 'Your account has been successfully created and verified'
