@@ -12,6 +12,10 @@
   </head>
 
   <body>
+    <% if user_signed_in? && current_user.phone_verified? %>
+      <%= render 'layouts/navbar' %>
+    <% end %>
+
     <% if flash[:notice] %>
       <p class="notice"><%= notice %></p>
     <% end %>

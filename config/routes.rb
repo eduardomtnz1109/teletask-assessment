@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  root "dashboard#index"
+  root "appointments#index"
 
   devise_for :users, controllers: {
     registrations: 'users/registrations'
@@ -22,5 +22,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :dashboard, only: %i[index]
+  resources :appointments do
+    member do
+      post :approve
+      post :decline
+    end
+  end
 end
