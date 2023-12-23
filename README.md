@@ -35,8 +35,8 @@ Follow these steps to set up and run the Appointment Platform on your local mach
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your/repo.git
-   cd appointment-platform
+   git clone https://github.com/eduardomtnz1109/teletask-assessment.git
+   cd teletask-assessment
 2. Install dependencies:
 
    ```bash
