@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       @user.create_default_slots if @user.doctor?
       NotificationService.new.send_welcome_notification(@user)
 
-      redirect_to appointments_index_path, notice: 'Your account has been successfully created and verified'
+      redirect_to appointments_path, notice: 'Your account has been successfully created and verified'
     else
       flash.now[:alert] = 'Incorrect verification code.'
 
