@@ -30,7 +30,7 @@ class AppointmentsController < ApplicationController
   # POST /appointments/:id/approve
   def approve
     @appointment = Appointment.find(params[:id])
-    if current_user.role.doctor? && @appointment.pending?
+    if current_user.doctor? && @appointment.pending?
       @appointment.approved!
       NotificationService.new.send_appointment_approval_notification(@appointment)
       ReminderJob.set(wait_until: (@appointment.start_time - 1.hour - 15.minutes)).perform_later(@appointment.id)
@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
   # POST /appointments/:id/decline
   def decline
     @appointment = Appointment.find(params[:id])
-    if current_user.role.doctor? && @appointment.pending?
+    if current_user.doctor? && @appointment.pending?
       @appointment.declined!
       NotificationService.new.send_appointment_approval_notification(@appointment, false)
 

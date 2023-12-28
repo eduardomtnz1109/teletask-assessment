@@ -20,6 +20,6 @@
 </table>
 
 <% if current_user.role == 'doctor' && @appointment.status == 'pending' %>
-  <%= link_to 'Approve', approve_appointment_path(@appointment), method: :post %>
-  <%= link_to 'Decline', decline_appointment_path(@appointment), method: :post %>
+  <%= button_to 'Approve', approve_appointment_path(@appointment), method: :post %>
+  <%= button_to 'Decline', decline_appointment_path(@appointment), method: :post %>
 <% end %>
