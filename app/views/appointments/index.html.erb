@@ -1,0 +1,30 @@
+<h1>Your Appointments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th><%= current_user.doctor? ? 'Patient' : 'Doctor' %></th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @appointments.each do |appointment| %>
+      <tr>
+        <td><%= appointment.start_time.strftime('%Y-%m-%d %H:%M') %></td>
+        <td><%= appointment.end_time.strftime('%Y-%m-%d %H:%M') %></td>
+        <td><%= current_user.doctor? ? appointment.patient.name : appointment.doctor.name %></td>
+        <td><%= appointment.status %></td>
+        <td>
+          <%= link_to 'View Details', appointment %>
+          <% if current_user.doctor? && appointment.status == 'pending' %>
+            <%= button_to 'Approve', approve_appointment_path(appointment), method: :post %>
+            <%= button_to 'Decline', decline_appointment_path(appointment), method: :post %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

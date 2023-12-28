@@ -1,0 +1,17 @@
+<h1>Doctor Profile</h1>
+
+<h2><%= @doctor.name %></h2>
+<p><%= @doctor.phone_number %></p>
+<p><%= @doctor.email %></p>
+
+<h3>Available Slots:</h3>
+<ul>
+  <% @available_slots.each do |slot| %>
+    <li>
+      <%= slot.start_time.strftime('%H:%M %p') %> - <%= slot.end_time.strftime('%H:%M %p') %>
+      <%= button_to 'Request Appointment', create_appointment_doctor_path(@doctor, appointment: { slot_id: slot.id }), method: :post %>
+    </li>
+  <% end %>
+</ul>
+
+<%= render 'appointments/form', appointment: @appointment %>

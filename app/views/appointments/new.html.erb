@@ -1,0 +1,22 @@
+<h1>Create New Appointment</h1>
+
+<%= form_for @appointment do |f| %>
+  <div class="field">
+    <%= f.label :start_time %>
+    <%= f.datetime_field :start_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :end_time %>
+    <%= f.datetime_field :end_time %>
+  </div>
+
+  <div class="field">
+    <%= f.label :doctor_id %>
+    <%= f.select :doctor_id, User.doctors.pluck(:name, :id) %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit 'Create Appointment' %>
+  </div>
+<% end %>

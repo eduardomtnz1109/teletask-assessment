@@ -1,0 +1,11 @@
+<nav>
+  <ul>
+    <li class="nav-item"><%= link_to 'Appointments', appointments_path %></li>
+
+    <% if current_user.doctor? %>
+      <li class="nav-item"><%= link_to 'Slots', slots_path %></li>
+    <% else %>
+      <li class="nav-item"><%= link_to 'Doctors', doctors_path %></li>
+    <% end %>
+  </ul>
+</nav>

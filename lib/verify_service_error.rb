@@ -1,0 +1,1 @@
+class VerifyServiceError < StandardError; end

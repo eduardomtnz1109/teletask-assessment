@@ -1,0 +1,14 @@
+<%= form_for(@user, url: process_details_user_path, method: :post) do |f| %>
+  <h2>User Onboarding</h2>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :phone_number %>
+  <%= f.telephone_field :phone_number %>
+
+  <%= f.label :role %>
+  <%= f.select :role, User.roles.keys.map { |role| [role.titleize, role] }, { prompt: 'Select User Role' } %>
+
+  <%= f.submit "Next", class: "btn btn-primary" %>
+<% end %>
