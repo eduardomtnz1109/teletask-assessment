@@ -10,13 +10,15 @@ class User < ApplicationRecord
   scope :doctors, -> { where(role: 'doctor') }
   scope :patients, -> { where(role: 'patient') }
 
-  has_many :doctor_appointments, class_name: 'Appointment', foreign_key: 'doctor_id'
-  has_many :patient_appointments, class_name: 'Appointment', foreign_key: 'patient_id'
+  has_many :doctor_appointments, class_name: 'Appointment', foreign_key: 'doctor_id', dependent: :destroy
+  has_many :patient_appointments, class_name: 'Appointment', foreign_key: 'patient_id', dependent: :destroy
   has_many :slots, foreign_key: 'doctor_id', dependent: :destroy
 
-  validates :name, presence: true
-  validates :phone_number, presence: true, uniqueness: true, format: { with: /\A\+\d+\z/, message: 'must be in the format: +1234567890' }
-  validates :role, presence: true
+  with_options on: :update do
+    validates :name, presence: true
+    validates :phone_number, presence: true, uniqueness: true, format: { with: /\A\+\d+\z/, message: 'must be in the format: +1234567889' }
+    validates :role, presence: true
+  end
 
   def create_default_slots
     # Set the application's timezone to EST
